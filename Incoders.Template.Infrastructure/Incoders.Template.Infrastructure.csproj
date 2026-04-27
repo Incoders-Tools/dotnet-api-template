@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RootNamespace>Incoders.Template.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Incoders.Template.Application\Incoders.Template.Application.csproj" />
+    <ProjectReference Include="..\Incoders.Template.Domain\Incoders.Template.Domain.csproj" />
+  </ItemGroup>
+
+  <!--#if (includeAuth) -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0" />
+  </ItemGroup>
+  <!--#endif-->
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Incoders.Template.Tests" />
+  </ItemGroup>
+
+</Project>

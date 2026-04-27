@@ -1,0 +1,12 @@
+<Solution>
+  <Project Path="Incoders.Template.ApiService/Incoders.Template.ApiService.csproj" />
+  <Project Path="Incoders.Template.AppHost/Incoders.Template.AppHost.csproj" />
+  <Project Path="Incoders.Template.Application/Incoders.Template.Application.csproj" />
+  <Project Path="Incoders.Template.Domain/Incoders.Template.Domain.csproj" />
+  <Project Path="Incoders.Template.Infrastructure/Incoders.Template.Infrastructure.csproj" />
+  <Project Path="Incoders.Template.ServiceDefaults/Incoders.Template.ServiceDefaults.csproj" />
+  <Project Path="Incoders.Template.Tests/Incoders.Template.Tests.csproj" />
+  <!--#if (includeWeb) -->
+  <Project Path="Incoders.Template.Web/Incoders.Template.Web.csproj" />
+  <!--#endif-->
+</Solution>

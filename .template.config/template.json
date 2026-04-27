@@ -1,0 +1,182 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Incoders",
+  "classifications": [ "Web", "API", "Cloud", "Aspire", "Clean Architecture" ],
+  "identity": "Incoders.Templates.ModularApi",
+  "name": "Incoders Modular API Boilerplate",
+  "shortName": "incoders-api",
+  "sourceName": "Incoders.Template",
+  "preferNameDirectory": true,
+  "defaultName": "MyModularApi",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "symbols": {
+    "includeWeb": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Include the Blazor Web frontend and wire it into AppHost."
+    },
+    "includeExternalApiExample": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Include the exchange-rate external integration sample (ACL gateway, endpoint, config)."
+    },
+    "includeAuth": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Include ASP.NET Core Identity + JWT Bearer authentication scaffolding."
+    },
+    "authProvider": {
+      "type": "parameter",
+      "datatype": "choice",
+      "defaultValue": "none",
+      "description": "Authentication provider emitted when includeAuth is true.",
+      "choices": [
+        { "choice": "none", "description": "No authentication provider." },
+        { "choice": "identity-jwt", "description": "ASP.NET Core Identity with JWT Bearer tokens." }
+      ]
+    },
+    "multiTenant": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Include shared-database, TenantId-column multi-tenancy (X-Tenant-Id header, membership service, tenant isolation)."
+    },
+    "persistence": {
+      "type": "parameter",
+      "datatype": "choice",
+      "defaultValue": "inMemory",
+      "description": "Persistence adapter to register in the Infrastructure composition root.",
+      "choices": [
+        { "choice": "none", "description": "No persistence adapter (stub only)." },
+        { "choice": "inMemory", "description": "In-memory adapter (default, development)." },
+        { "choice": "efcore", "description": "Entity Framework Core adapter (configure database separately)." }
+      ]
+    },
+    "database": {
+      "type": "parameter",
+      "datatype": "choice",
+      "defaultValue": "none",
+      "description": "Database provider when persistence is EF Core-backed.",
+      "choices": [
+        { "choice": "none", "description": "No specific database (in-memory or unconfigured)." },
+        { "choice": "postgres", "description": "PostgreSQL via Npgsql.EntityFrameworkCore.PostgreSQL." },
+        { "choice": "sqlserver", "description": "Microsoft SQL Server via Microsoft.EntityFrameworkCore.SqlServer." }
+      ]
+    },
+    "cache": {
+      "type": "parameter",
+      "datatype": "choice",
+      "defaultValue": "inMemory",
+      "description": "Cache adapter to register in the Infrastructure composition root.",
+      "choices": [
+        { "choice": "none", "description": "No cache adapter." },
+        { "choice": "inMemory", "description": "In-memory cache (default)." },
+        { "choice": "redis", "description": "Redis-backed cache adapter." }
+      ]
+    },
+    "UnderscoreName": {
+      "type": "derived",
+      "valueSource": "name",
+      "valueTransform": "dotsToUnderscores",
+      "replaces": "Incoders_Template",
+      "fileRename": "Incoders_Template"
+    }
+  },
+  "forms": {
+    "dotsToUnderscores": {
+      "identifier": "replace",
+      "pattern": "\\.",
+      "replacement": "_"
+    }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "condition": "(!includeWeb)",
+          "exclude": [
+            "Incoders.Template.Web/**"
+          ]
+        },
+        {
+          "condition": "(!includeExternalApiExample)",
+          "exclude": [
+            "Incoders.Template.Application/Abstractions/ExternalServices/**",
+            "Incoders.Template.Application/Features/External/**",
+            "Incoders.Template.Infrastructure/ExternalServices/**",
+            "Incoders.Template.ApiService/Endpoints/External/**",
+            "Incoders.Template.Tests/Application/External/**"
+          ]
+        },
+        {
+          "condition": "(!multiTenant)",
+          "exclude": [
+            "Incoders.Template.Domain/Tenants/**",
+            "Incoders.Template.Application/Abstractions/Tenancy/**",
+            "Incoders.Template.Application/Features/Tenants/**",
+            "Incoders.Template.Infrastructure/Tenancy/**",
+            "Incoders.Template.ApiService/Endpoints/Tenants/**",
+            "Incoders.Template.Tests/Domain/TenantTests.cs",
+            "Incoders.Template.Tests/Application/Tenants/**",
+            "Incoders.Template.Tests/Application/SystemSettings/TenantIsolationTests.cs"
+          ]
+        },
+        {
+          "condition": "(!includeAuth)",
+          "exclude": [
+            "Incoders.Template.Infrastructure/Identity/**",
+            "Incoders.Template.ApiService/Endpoints/Auth/**",
+            "Incoders.Template.Tests/Application/Auth/**"
+          ]
+        }
+      ],
+      "exclude": [
+        "**/bin/**",
+        "**/obj/**",
+        "**/.vs/**",
+        ".git/**",
+        "**/*.user",
+        "**/*.filelist",
+        "**/TestApp/**",
+        "**/TestApp.*/**",
+        "**/TestBasic/**",
+        "**/TestBasic.*/**",
+        "**/TestFull/**",
+        "**/TestFull.*/**",
+        ".template.config/**"
+      ]
+    }
+  ],
+  "specialCustomOperations": {
+    "**/*.slnx": {
+      "operations": [
+        {
+          "type": "conditional",
+          "configuration": {
+            "style": "custom",
+            "if": [ "<!--#if" ],
+            "else": [ "<!--#else" ],
+            "elseif": [ "<!--#elseif" ],
+            "endif": [ "<!--#endif-->" ],
+            "actionableIf": [ "<!--#if" ],
+            "actionableElse": [ "<!--#else" ],
+            "actionableElseif": [ "<!--#elseif" ],
+            "actions": [ "cmdVerb", "uncomment", "reduceComment" ],
+            "trim": true,
+            "wholeLine": true,
+            "evaluator": "C++"
+          }
+        }
+      ]
+    }
+  },
+  "primaryOutputs": [
+    { "path": "Incoders.Template.slnx" }
+  ]
+}
